@@ -18,4 +18,4 @@ API detail : http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_ke
 When user tap on any list item, currently opening a detail User detail.
 
 Build Info
-Android Studio - Bumblebee, Compile SDK - 32, MinSDK - 21, Target - 32
+Android Studio - Dolphin, Compile SDK - 32, MinSDK - 21, Target - 32
