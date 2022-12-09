@@ -30,7 +30,7 @@ class UserDetailViewModel @Inject constructor(
                 getUserDetailUseCase(user)
             }.collect {
                 when (it) {
-                    is ViewState.Loading -> _userDetail.value = it
+                    is ViewState.Loading -> _userDetail.value = ViewState.Loading(false)
                     is ViewState.Failure -> _userDetail.value = it
                     is ViewState.Success -> {
                         it.output.let { artists ->

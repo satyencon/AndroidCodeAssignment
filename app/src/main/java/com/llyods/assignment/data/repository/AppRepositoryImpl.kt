@@ -25,6 +25,7 @@ class AppRepositoryImpl @Inject constructor(
                 val userData = mapper.map(responseData)
                 emit(BaseModelResult.OnSuccess(userData))
             } catch (e: Exception) {
+                emit(BaseModelResult.OnFailure(e))
             }
         }
     }
@@ -36,6 +37,7 @@ class AppRepositoryImpl @Inject constructor(
                 val userMappedData = mapper.mapperDetail(userDetails)
                 emit(BaseModelResult.OnSuccess(userMappedData))
             } catch (e: Exception) {
+                emit(BaseModelResult.OnFailure(e))
             }
         }
     }

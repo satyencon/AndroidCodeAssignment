@@ -25,7 +25,7 @@ class UserListViewModel @Inject constructor(
                 getUserListUseCase()
             }.collect {
                 when (it) {
-                    is ViewState.Loading -> _userListFlow.value = it
+                    is ViewState.Loading -> _userListFlow.value = ViewState.Loading(false)
                     is ViewState.Failure -> _userListFlow.value = it
                     is ViewState.Success -> {
                         it.output.let { artists ->

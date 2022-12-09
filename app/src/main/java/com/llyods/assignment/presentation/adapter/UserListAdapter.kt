@@ -28,7 +28,7 @@ class UserListAdapter(var context: Context): RecyclerView.Adapter<UserListAdapte
         val userdata = userList[position]
         with(holder) {
             Glide.with(binding.imageUser).load(userdata.avatar_url).into(binding.imageUser)
-            binding.tvName.text = userdata.login
+            binding.tvName.text = userdata.login.capitalize()
 
             itemView.setOnClickListener {
                 onItemClick?.invoke(userdata)

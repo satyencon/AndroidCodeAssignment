@@ -1,23 +1,24 @@
 package com.llyods.assignment.presentation.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.llyods.assignment.R
 import com.llyods.assignment.databinding.FragmentUserDetailsBinding
 import com.llyods.assignment.extensions.loadImage
-import com.llyods.assignment.utils.AppConstants
+import com.llyods.assignment.extensions.snackBar
 import com.llyods.assignment.presentation.viewmodel.UserDetailViewModel
 import com.llyods.assignment.presentation.viewmodel.ViewState
+import com.llyods.assignment.utils.AppConstants.USER_IMAGE
+import com.llyods.assignment.utils.AppConstants.USER_NAME
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class UserDetailsFragment : Fragment() {
+class UserDetailsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentUserDetailsBinding
 
@@ -35,7 +36,7 @@ class UserDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.getString(AppConstants.USER_NAME)?.let {
+        arguments?.getString(USER_NAME)?.let {
             viewModel.getUserDetail(it)
         }
 
@@ -43,20 +44,20 @@ class UserDetailsFragment : Fragment() {
     }
 
     private fun initObserver() {
-        lifecycleScope.launch {
+        showHideProgressBar(binding.progressBar, true)
+        lifecycleScope.launchWhenCreated {
             viewModel.userDetailStateflow.collect {
                 when(it) {
-                    is ViewState.Loading -> {
-
-                    }
                     is ViewState.Success -> {
-                        loadImage(binding.image,arguments?.getString(AppConstants.USER_IMAGE))
-                        binding.name.text = it.output?.name
-                        binding.location.text = it.output?.location
+                        loadImage(binding.image,arguments?.getString(USER_IMAGE))
+                        binding.name.text = it.output.name
+                        binding.location.text = it.output.location
+                        showHideProgressBar(binding.progressBar, false)
 
                     }
                     is ViewState.Failure -> {
-
+                        showHideProgressBar(binding.progressBar, false)
+                        snackBar(resources.getString(R.string.network_failure))
                     }
                 }
             }

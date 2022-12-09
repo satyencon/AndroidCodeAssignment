@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_navigation"
-    app:startDestination="@id/quotes_list_frag">
+    app:startDestination="@id/user_list_frag">
 
     <fragment
-        android:id="@+id/quotes_list_frag"
+        android:id="@+id/user_list_frag"
         android:name="com.llyods.assignment.presentation.fragments.UserListFragment"
-        android:label="fragment_quotes_list"
+        android:label="fragment_user_list"
         tools:layout="@layout/fragment_user_list" >
         <action
-            android:id="@+id/action_quotes_list_frag_to_quotes_details_frag"
-            app:destination="@id/quotes_details_frag" />
+            android:id="@+id/action_user_list_frag_to_user_details_frag"
+            app:destination="@id/user_details_frag" />
     </fragment>
     <fragment
-        android:id="@+id/quotes_details_frag"
+        android:id="@+id/user_details_frag"
         android:name="com.llyods.assignment.presentation.fragments.UserDetailsFragment"
-        android:label="fragment_quotes_details"
+        android:label="fragment_user_details"
         tools:layout="@layout/fragment_user_details" >
     </fragment>
 </navigation>

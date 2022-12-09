@@ -1,0 +1,425 @@
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\n    id 'com.android.application'\n    id 'kotlin-android'\n    id 'kotlin-kapt'\n    id 'kotlin-android-extensions'\n    id 'dagger.hilt.android.plugin'\n    id 'androidx.navigation.safeargs.kotlin'\n}\n\nandroid {\n    compileSdk 31\n\n    defaultConfig {\n        applicationId \"com.llyods.assignment\"\n        minSdk 22\n        targetSdk 31\n        versionCode 1\n        versionName \"1.0\"\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n    }\n\n    buildTypes {\n        release {\n            buildConfigField(\"String\", \"API_KEY\", \"\\\"\\\"\")\n            buildConfigField(\"String\", \"BASE_URL\", \"\\\"\\\"\")\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n\n        debug {\n            buildConfigField(\"String\", \"BASE_URL\", \"\\\"https://api.github.com/\\\"\")\n        }\n    }\n    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_1_8\n        targetCompatibility JavaVersion.VERSION_1_8\n    }\n    kotlinOptions {\n        jvmTarget = '1.8'\n    }\n\n    buildFeatures {\n        viewBinding = true\n    }\n}\n\ndependencies {\n\n    def hilt_version = '2.38.1'\n    def nav_version = \"2.3.5\"\n\n    // Test\n    testImplementation 'junit:junit:4.13.2'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.3'\n    testImplementation 'io.mockk:mockk:1.11.0'\n    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0'\n    testImplementation \"androidx.arch.core:core-testing:2.1.0\"\n    testImplementation 'com.squareup.okhttp3:mockwebserver:4.7.2'\n\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'\n    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0'\n    implementation 'androidx.test.espresso:espresso-idling-resource:3.4.0'\n\n    // androidx.test\n    androidTestImplementation 'androidx.test:runner:1.4.0'\n    androidTestImplementation 'androidx.test:core:1.4.0'\n    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.3'\n\n\n    implementation \"com.google.android.material:material:1.3.0\"\n    implementation 'androidx.appcompat:appcompat:1.2.0'\n    implementation 'androidx.legacy:legacy-support-v4:1.0.0'\n    implementation \"com.google.dagger:hilt-android:$hilt_version\"\n    kapt \"com.google.dagger:hilt-compiler:$hilt_version\"\n\n\n    // Coroutine\n    implementation \"org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0\"\n    implementation \"org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0\"\n\n    // Navigation Component\n    implementation \"androidx.navigation:navigation-fragment-ktx:$nav_version\"\n    implementation \"androidx.navigation:navigation-ui-ktx:$nav_version\"\n\n    //Retrofit\n    implementation 'com.squareup.retrofit2:retrofit:2.9.0'\n    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'\n    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'\n    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'\n    implementation 'com.squareup.okhttp3:okhttp:4.9.1'\n    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'\n    implementation 'com.squareup.moshi:moshi-kotlin:1.8.0'\n    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.8.0'\n\n    // Architecture\n    implementation \"androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1\"\n    implementation \"androidx.lifecycle:lifecycle-livedata-ktx:2.3.1\"\n    implementation \"androidx.lifecycle:lifecycle-extensions:2.2.0\"\n    implementation \"androidx.lifecycle:lifecycle-runtime-ktx:2.3.1\"\n    implementation 'androidx.fragment:fragment-ktx:1.4.0-alpha07'\n    implementation 'android.arch.lifecycle:extensions:1.1.1'\n\n    // Glide\n    implementation 'com.github.bumptech.glide:glide:4.12.0'\n    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'\n\n    //Shimmer\n    implementation 'com.facebook.shimmer:shimmer:0.5.0'\n\n\n}\n\nkapt {\n    correctErrorTypes true\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	(revision 6c005e6d06306327ef58b9c2a69724f871ef1ef4)
++++ b/app/build.gradle	(date 1670584413616)
+@@ -105,6 +105,9 @@
+     implementation 'com.github.bumptech.glide:glide:4.12.0'
+     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+ 
++
++    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2'
++
+     //Shimmer
+     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+ 
+Index: app/src/main/java/com/llyods/assignment/extensions/Ktx.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.llyods.assignment.extensions\n\nimport android.view.View\nimport android.widget.ImageView\nimport android.widget.TextView\nimport androidx.fragment.app.Fragment\nimport com.bumptech.glide.Glide\nimport com.google.android.material.snackbar.Snackbar\nimport java.text.SimpleDateFormat\nimport java.util.Locale\n\n\nfun View.gone() {\n    this.visibility = View.GONE\n}\n\nfun Fragment.snackBar(message: String) {\n    Snackbar.make(this.requireView(), message, Snackbar.LENGTH_SHORT).show()\n}\n\nfun View.click(it: (View) -> Unit) {\n    this.setOnClickListener(it)\n}\n\nfun TextView.dateFormatter(string: String?) {\n    if (string?.isNotEmpty() == true) {\n        val date = SimpleDateFormat(\"yyyy-mm-dd'T'HH:mm:ss'Z'\", Locale.getDefault()).parse(string)\n        date?.let {\n            val format = SimpleDateFormat(\"dd/MM/yyy\", Locale.getDefault())\n            this.text = format.format(it)\n        }\n\n    }\n}\n\n// show image using Glide\nfun loadImage(view: ImageView, url: String?) {\n    if (!url.isNullOrEmpty()) {\n        Glide.with(view.context).load(url).into(view)\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/llyods/assignment/extensions/Ktx.kt b/app/src/main/java/com/llyods/assignment/extensions/Ktx.kt
+--- a/app/src/main/java/com/llyods/assignment/extensions/Ktx.kt	(revision 6c005e6d06306327ef58b9c2a69724f871ef1ef4)
++++ b/app/src/main/java/com/llyods/assignment/extensions/Ktx.kt	(date 1670582788676)
+@@ -2,13 +2,9 @@
+ 
+ import android.view.View
+ import android.widget.ImageView
+-import android.widget.TextView
+ import androidx.fragment.app.Fragment
+ import com.bumptech.glide.Glide
+ import com.google.android.material.snackbar.Snackbar
+-import java.text.SimpleDateFormat
+-import java.util.Locale
+-
+ 
+ fun View.gone() {
+     this.visibility = View.GONE
+@@ -22,17 +18,6 @@
+     this.setOnClickListener(it)
+ }
+ 
+-fun TextView.dateFormatter(string: String?) {
+-    if (string?.isNotEmpty() == true) {
+-        val date = SimpleDateFormat("yyyy-mm-dd'T'HH:mm:ss'Z'", Locale.getDefault()).parse(string)
+-        date?.let {
+-            val format = SimpleDateFormat("dd/MM/yyy", Locale.getDefault())
+-            this.text = format.format(it)
+-        }
+-
+-    }
+-}
+-
+ // show image using Glide
+ fun loadImage(view: ImageView, url: String?) {
+     if (!url.isNullOrEmpty()) {
+Index: app/src/main/res/navigation/app_navigation.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<navigation xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:id=\"@+id/app_navigation\"\n    app:startDestination=\"@id/quotes_list_frag\">\n\n    <fragment\n        android:id=\"@+id/quotes_list_frag\"\n        android:name=\"com.llyods.assignment.presentation.fragments.UserListFragment\"\n        android:label=\"fragment_quotes_list\"\n        tools:layout=\"@layout/fragment_user_list\" >\n        <action\n            android:id=\"@+id/action_quotes_list_frag_to_quotes_details_frag\"\n            app:destination=\"@id/quotes_details_frag\" />\n    </fragment>\n    <fragment\n        android:id=\"@+id/quotes_details_frag\"\n        android:name=\"com.llyods.assignment.presentation.fragments.UserDetailsFragment\"\n        android:label=\"fragment_quotes_details\"\n        tools:layout=\"@layout/fragment_user_details\" >\n    </fragment>\n</navigation>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/navigation/app_navigation.xml b/app/src/main/res/navigation/app_navigation.xml
+--- a/app/src/main/res/navigation/app_navigation.xml	(revision 6c005e6d06306327ef58b9c2a69724f871ef1ef4)
++++ b/app/src/main/res/navigation/app_navigation.xml	(date 1670582788683)
+@@ -3,21 +3,21 @@
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:id="@+id/app_navigation"
+-    app:startDestination="@id/quotes_list_frag">
++    app:startDestination="@id/user_list_frag">
+ 
+     <fragment
+-        android:id="@+id/quotes_list_frag"
++        android:id="@+id/user_list_frag"
+         android:name="com.llyods.assignment.presentation.fragments.UserListFragment"
+-        android:label="fragment_quotes_list"
++        android:label="fragment_user_list"
+         tools:layout="@layout/fragment_user_list" >
+         <action
+-            android:id="@+id/action_quotes_list_frag_to_quotes_details_frag"
+-            app:destination="@id/quotes_details_frag" />
++            android:id="@+id/action_user_list_frag_to_user_details_frag"
++            app:destination="@id/user_details_frag" />
+     </fragment>
+     <fragment
+-        android:id="@+id/quotes_details_frag"
++        android:id="@+id/user_details_frag"
+         android:name="com.llyods.assignment.presentation.fragments.UserDetailsFragment"
+-        android:label="fragment_quotes_details"
++        android:label="fragment_user_details"
+         tools:layout="@layout/fragment_user_details" >
+     </fragment>
+ </navigation>
+\ No newline at end of file
+Index: app/src/main/java/com/llyods/assignment/data/repository/AppRepositoryImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.llyods.assignment.data.repository\n\n\nimport com.llyods.assignment.data.mapper.UserDomainMapper\nimport com.llyods.assignment.data.remote.ApiService\nimport com.llyods.assignment.domain.datamodel.BaseModelResult\nimport com.llyods.assignment.domain.datamodel.UserDetailModel\nimport com.llyods.assignment.domain.datamodel.UserModel\nimport com.llyods.assignment.domain.repository.AppRepository\nimport kotlinx.coroutines.DelicateCoroutinesApi\nimport kotlinx.coroutines.flow.Flow\nimport kotlinx.coroutines.flow.flow\nimport javax.inject.Inject\n\n@DelicateCoroutinesApi\nclass AppRepositoryImpl @Inject constructor(\n    private val apiService: ApiService,\n    private val mapper: UserDomainMapper\n): AppRepository {\n\n    override suspend fun getUserList(): Flow<BaseModelResult<List<UserModel>>> {\n        return flow {\n            try {\n                val responseData = apiService.getUserList()\n                val userData = mapper.map(responseData)\n                emit(BaseModelResult.OnSuccess(userData))\n            } catch (e: Exception) {\n            }\n        }\n    }\n\n    override suspend fun getUserDetail(user: String): Flow<BaseModelResult<UserDetailModel>> {\n        return flow {\n            try {\n                val userDetails = apiService.getUserDetails(user)\n                val userMappedData = mapper.mapperDetail(userDetails)\n                emit(BaseModelResult.OnSuccess(userMappedData))\n            } catch (e: Exception) {\n            }\n        }\n    }\n\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/llyods/assignment/data/repository/AppRepositoryImpl.kt b/app/src/main/java/com/llyods/assignment/data/repository/AppRepositoryImpl.kt
+--- a/app/src/main/java/com/llyods/assignment/data/repository/AppRepositoryImpl.kt	(revision 6c005e6d06306327ef58b9c2a69724f871ef1ef4)
++++ b/app/src/main/java/com/llyods/assignment/data/repository/AppRepositoryImpl.kt	(date 1670582788669)
+@@ -25,6 +25,7 @@
+                 val userData = mapper.map(responseData)
+                 emit(BaseModelResult.OnSuccess(userData))
+             } catch (e: Exception) {
++                emit(BaseModelResult.OnFailure(e))
+             }
+         }
+     }
+@@ -36,6 +37,7 @@
+                 val userMappedData = mapper.mapperDetail(userDetails)
+                 emit(BaseModelResult.OnSuccess(userMappedData))
+             } catch (e: Exception) {
++                emit(BaseModelResult.OnFailure(e))
+             }
+         }
+     }
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\n    <string name=\"app_name\">AndroidAssignment</string>\n    <string name=\"list_of_users\">List of Users</string>\n\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+--- a/app/src/main/res/values/strings.xml	(revision 6c005e6d06306327ef58b9c2a69724f871ef1ef4)
++++ b/app/src/main/res/values/strings.xml	(date 1670582788693)
+@@ -1,5 +1,6 @@
+ <resources>
+     <string name="app_name">AndroidAssignment</string>
+     <string name="list_of_users">List of Users</string>
++    <string name="network_error">Network Error</string>
+ 
+ </resources>
+\ No newline at end of file
+Index: gradle.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># Project-wide Gradle settings.\n# IDE (e.g. Android Studio) users:\n# Gradle settings configured through the IDE *will override*\n# any settings specified in this file.\n# For more details on how to configure your build environment visit\n# http://www.gradle.org/docs/current/userguide/build_environment.html\n# Specifies the JVM arguments used for the daemon process.\n# The setting is particularly useful for tweaking memory settings.\norg.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8\n# When configured, Gradle will run in incubating parallel mode.\n# This option should only be used with decoupled projects. More details, visit\n# http://www.gradle.org/docs/current/userguide/multi_project_builds.html#sec:decoupled_projects\n# org.gradle.parallel=true\n# AndroidX package structure to make it clearer which packages are bundled with the\n# Android operating system, and which are packaged with your app\"s APK\n# https://developer.android.com/topic/libraries/support-library/androidx-rn\nandroid.useAndroidX=true\n# Automatically convert third-party libraries to use AndroidX\nandroid.enableJetifier=true\n# Kotlin code style for this project: \"official\" or \"obsolete\":\nkotlin.code.style=official
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/gradle.properties b/gradle.properties
+--- a/gradle.properties	(revision 6c005e6d06306327ef58b9c2a69724f871ef1ef4)
++++ b/gradle.properties	(date 1670584073469)
+@@ -6,7 +6,7 @@
+ # http://www.gradle.org/docs/current/userguide/build_environment.html
+ # Specifies the JVM arguments used for the daemon process.
+ # The setting is particularly useful for tweaking memory settings.
+-org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8
++org.gradle.jvmargs=-Xmx4608m -Dfile.encoding=UTF-8
+ # When configured, Gradle will run in incubating parallel mode.
+ # This option should only be used with decoupled projects. More details, visit
+ # http://www.gradle.org/docs/current/userguide/multi_project_builds.html#sec:decoupled_projects
+Index: app/src/main/java/com/llyods/assignment/presentation/fragments/UserDetailsFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.llyods.assignment.presentation.fragments\n\nimport android.os.Bundle\nimport androidx.fragment.app.Fragment\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport androidx.fragment.app.viewModels\nimport androidx.lifecycle.lifecycleScope\nimport com.llyods.assignment.databinding.FragmentUserDetailsBinding\nimport com.llyods.assignment.extensions.loadImage\nimport com.llyods.assignment.utils.AppConstants\nimport com.llyods.assignment.presentation.viewmodel.UserDetailViewModel\nimport com.llyods.assignment.presentation.viewmodel.ViewState\nimport dagger.hilt.android.AndroidEntryPoint\nimport kotlinx.coroutines.flow.collect\nimport kotlinx.coroutines.launch\n\n@AndroidEntryPoint\nclass UserDetailsFragment : Fragment() {\n\n    private lateinit var binding: FragmentUserDetailsBinding\n\n    private val viewModel: UserDetailViewModel by viewModels()\n\n    override fun onCreateView(\n        inflater: LayoutInflater, container: ViewGroup?,\n        savedInstanceState: Bundle?\n    ): View {\n\n        binding = FragmentUserDetailsBinding.inflate(inflater, container, false)\n        return binding.root\n    }\n\n    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {\n        super.onViewCreated(view, savedInstanceState)\n\n        arguments?.getString(AppConstants.USER_NAME)?.let {\n            viewModel.getUserDetail(it)\n        }\n\n        initObserver()\n    }\n\n    private fun initObserver() {\n        lifecycleScope.launch {\n            viewModel.userDetailStateflow.collect {\n                when(it) {\n                    is ViewState.Loading -> {\n\n                    }\n                    is ViewState.Success -> {\n                        loadImage(binding.image,arguments?.getString(AppConstants.USER_IMAGE))\n                        binding.name.text = it.output?.name\n                        binding.location.text = it.output?.location\n\n                    }\n                    is ViewState.Failure -> {\n\n                    }\n                }\n            }\n        }\n    }\n\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/llyods/assignment/presentation/fragments/UserDetailsFragment.kt b/app/src/main/java/com/llyods/assignment/presentation/fragments/UserDetailsFragment.kt
+--- a/app/src/main/java/com/llyods/assignment/presentation/fragments/UserDetailsFragment.kt	(revision 6c005e6d06306327ef58b9c2a69724f871ef1ef4)
++++ b/app/src/main/java/com/llyods/assignment/presentation/fragments/UserDetailsFragment.kt	(date 1670583730505)
+@@ -7,17 +7,19 @@
+ import android.view.ViewGroup
+ import androidx.fragment.app.viewModels
+ import androidx.lifecycle.lifecycleScope
++import com.llyods.assignment.R
+ import com.llyods.assignment.databinding.FragmentUserDetailsBinding
+ import com.llyods.assignment.extensions.loadImage
++import com.llyods.assignment.extensions.snackBar
+ import com.llyods.assignment.utils.AppConstants
+ import com.llyods.assignment.presentation.viewmodel.UserDetailViewModel
+ import com.llyods.assignment.presentation.viewmodel.ViewState
+ import dagger.hilt.android.AndroidEntryPoint
+-import kotlinx.coroutines.flow.collect
++import kotlinx.android.synthetic.main.fragment_user_list.*
+ import kotlinx.coroutines.launch
+ 
+ @AndroidEntryPoint
+-class UserDetailsFragment : Fragment() {
++class UserDetailsFragment : BaseFragment() {
+ 
+     private lateinit var binding: FragmentUserDetailsBinding
+ 
+@@ -47,16 +49,14 @@
+             viewModel.userDetailStateflow.collect {
+                 when(it) {
+                     is ViewState.Loading -> {
+-
+                     }
+                     is ViewState.Success -> {
+                         loadImage(binding.image,arguments?.getString(AppConstants.USER_IMAGE))
+-                        binding.name.text = it.output?.name
+-                        binding.location.text = it.output?.location
+-
++                        binding.name.text = it.output.name
++                        binding.location.text = it.output.location
+                     }
+                     is ViewState.Failure -> {
+-
++                        snackBar(resources.getString(R.string.network_error))
+                     }
+                 }
+             }
+Index: app/src/main/res/layout/fragment_user_list.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:layout_width=\"match_parent\"\n    android:layout_height=\"match_parent\"\n    android:background=\"@color/background\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\">\n\n    <com.google.android.material.appbar.MaterialToolbar\n        android:id=\"@+id/toolbarId\"\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"wrap_content\"\n        android:background=\"@color/surface\"\n        app:titleTextColor=\"@color/black\"\n        app:layout_constraintStart_toStartOf=\"parent\"\n        app:layout_constraintEnd_toEndOf=\"parent\"\n        app:layout_constraintTop_toTopOf=\"parent\">\n\n        <androidx.constraintlayout.widget.ConstraintLayout\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"match_parent\">\n\n            <androidx.appcompat.widget.AppCompatTextView\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:text=\"@string/list_of_users\"\n                android:textSize=\"17sp\"\n                android:textColor=\"@color/black\"\n                android:layout_marginEnd=\"30dp\"\n                android:fontFamily=\"@font/circular_std_black\"\n                app:layout_constraintTop_toTopOf=\"parent\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"\n                app:layout_constraintStart_toStartOf=\"parent\"\n                app:layout_constraintEnd_toEndOf=\"parent\"/>\n\n            <androidx.appcompat.widget.AppCompatImageButton\n                android:id=\"@+id/btnDarkMode\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_marginEnd=\"20dp\"\n                android:src=\"@drawable/ic_dark\"\n                android:tint=\"@color/black\"\n                android:visibility=\"gone\"\n                android:background=\"@android:color/transparent\"\n                app:layout_constraintEnd_toEndOf=\"parent\"\n                app:layout_constraintTop_toTopOf=\"parent\"\n                app:layout_constraintBottom_toBottomOf=\"parent\"/>\n\n        </androidx.constraintlayout.widget.ConstraintLayout>\n\n    </com.google.android.material.appbar.MaterialToolbar>\n\n\n    <com.facebook.shimmer.ShimmerFrameLayout\n        android:id=\"@+id/shimmer\"\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"0dp\"\n        app:layout_constraintTop_toBottomOf=\"@+id/toolbarId\"\n        app:layout_constraintBottom_toBottomOf=\"parent\">\n\n        <androidx.appcompat.widget.LinearLayoutCompat\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"match_parent\"\n            android:orientation=\"vertical\">\n\n            <include layout=\"@layout/list_item_shimmer_effect\"/>\n            <include layout=\"@layout/list_item_shimmer_effect\"/>\n            <include layout=\"@layout/list_item_shimmer_effect\"/>\n            <include layout=\"@layout/list_item_shimmer_effect\"/>\n            <include layout=\"@layout/list_item_shimmer_effect\"/>\n            <include layout=\"@layout/list_item_shimmer_effect\"/>\n            <include layout=\"@layout/list_item_shimmer_effect\"/>\n            <include layout=\"@layout/list_item_shimmer_effect\"/>\n            <include layout=\"@layout/list_item_shimmer_effect\"/>\n            <include layout=\"@layout/list_item_shimmer_effect\"/>\n            <include layout=\"@layout/list_item_shimmer_effect\"/>\n            <include layout=\"@layout/list_item_shimmer_effect\"/>\n            <include layout=\"@layout/list_item_shimmer_effect\"/>\n            <include layout=\"@layout/list_item_shimmer_effect\"/>\n            <include layout=\"@layout/list_item_shimmer_effect\"/>\n\n        </androidx.appcompat.widget.LinearLayoutCompat>\n\n    </com.facebook.shimmer.ShimmerFrameLayout>\n\n    <androidx.recyclerview.widget.RecyclerView\n        android:id=\"@+id/recyclerUserList\"\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"0dp\"\n        android:paddingBottom=\"5dp\"\n        app:layoutManager=\"androidx.recyclerview.widget.LinearLayoutManager\"\n        tools:listitem=\"@layout/list_user_item\"\n        app:layout_constraintStart_toStartOf=\"parent\"\n        app:layout_constraintEnd_toEndOf=\"parent\"\n        app:layout_constraintTop_toBottomOf=\"@+id/toolbarId\"\n        app:layout_constraintBottom_toBottomOf=\"parent\"/>\n\n    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton\n        android:id=\"@+id/fabRandom\"\n        android:layout_width=\"wrap_content\"\n        android:layout_height=\"wrap_content\"\n        android:textAllCaps=\"false\"\n        android:textColor=\"@color/white\"\n        android:backgroundTint=\"@color/black\"\n        app:iconTint=\"@color/white\"\n        android:layout_margin=\"15dp\"\n        android:visibility=\"gone\"\n        app:layout_constraintEnd_toEndOf=\"parent\"\n        app:layout_constraintBottom_toBottomOf=\"parent\"\n        />\n\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/fragment_user_list.xml b/app/src/main/res/layout/fragment_user_list.xml
+--- a/app/src/main/res/layout/fragment_user_list.xml	(revision 6c005e6d06306327ef58b9c2a69724f871ef1ef4)
++++ b/app/src/main/res/layout/fragment_user_list.xml	(date 1670583730501)
+@@ -51,37 +51,15 @@
+     </com.google.android.material.appbar.MaterialToolbar>
+ 
+ 
+-    <com.facebook.shimmer.ShimmerFrameLayout
+-        android:id="@+id/shimmer"
+-        android:layout_width="match_parent"
+-        android:layout_height="0dp"
++    <ProgressBar
++        android:id="@+id/progressBar"
++        style="?android:attr/progressBarStyle"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/toolbarId"
+-        app:layout_constraintBottom_toBottomOf="parent">
+-
+-        <androidx.appcompat.widget.LinearLayoutCompat
+-            android:layout_width="match_parent"
+-            android:layout_height="match_parent"
+-            android:orientation="vertical">
+-
+-            <include layout="@layout/list_item_shimmer_effect"/>
+-            <include layout="@layout/list_item_shimmer_effect"/>
+-            <include layout="@layout/list_item_shimmer_effect"/>
+-            <include layout="@layout/list_item_shimmer_effect"/>
+-            <include layout="@layout/list_item_shimmer_effect"/>
+-            <include layout="@layout/list_item_shimmer_effect"/>
+-            <include layout="@layout/list_item_shimmer_effect"/>
+-            <include layout="@layout/list_item_shimmer_effect"/>
+-            <include layout="@layout/list_item_shimmer_effect"/>
+-            <include layout="@layout/list_item_shimmer_effect"/>
+-            <include layout="@layout/list_item_shimmer_effect"/>
+-            <include layout="@layout/list_item_shimmer_effect"/>
+-            <include layout="@layout/list_item_shimmer_effect"/>
+-            <include layout="@layout/list_item_shimmer_effect"/>
+-            <include layout="@layout/list_item_shimmer_effect"/>
+-
+-        </androidx.appcompat.widget.LinearLayoutCompat>
+-
+-    </com.facebook.shimmer.ShimmerFrameLayout>
++        app:layout_constraintBottom_toBottomOf="parent"/>
+ 
+     <androidx.recyclerview.widget.RecyclerView
+         android:id="@+id/recyclerUserList"
+Index: app/src/main/java/com/llyods/assignment/presentation/fragments/UserListFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.llyods.assignment.presentation.fragments\n\nimport android.os.Bundle\nimport androidx.fragment.app.Fragment\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport androidx.appcompat.app.AppCompatDelegate\nimport androidx.fragment.app.viewModels\nimport androidx.lifecycle.lifecycleScope\nimport androidx.navigation.fragment.findNavController\nimport com.llyods.assignment.R\nimport com.llyods.assignment.presentation.adapter.UserListAdapter\nimport com.llyods.assignment.databinding.FragmentUserListBinding\nimport com.llyods.assignment.extensions.click\nimport com.llyods.assignment.extensions.gone\nimport com.llyods.assignment.utils.AppConstants\nimport com.llyods.assignment.presentation.viewmodel.UserListViewModel\nimport com.llyods.assignment.presentation.viewmodel.ViewState\nimport dagger.hilt.android.AndroidEntryPoint\nimport kotlinx.coroutines.flow.collect\nimport kotlinx.coroutines.launch\n\n@AndroidEntryPoint\nclass UserListFragment : Fragment() {\n\n    private lateinit var binding: FragmentUserListBinding\n    private lateinit var mAdapter: UserListAdapter\n\n    private val viewModel: UserListViewModel by viewModels()\n\n    override fun onCreateView(\n        inflater: LayoutInflater, container: ViewGroup?,\n        savedInstanceState: Bundle?\n    ): View {\n        mAdapter = UserListAdapter(requireContext())\n        binding =  FragmentUserListBinding.inflate(inflater, container, false)\n        return binding.root\n    }\n\n    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {\n        super.onViewCreated(view, savedInstanceState)\n        viewModel.getALlListData()\n        setupUI()\n        initObservers()\n    }\n\n    private fun setupUI() {\n        binding.btnDarkMode.click {\n            val mode = AppCompatDelegate.getDefaultNightMode()\n            if(mode == AppCompatDelegate.MODE_NIGHT_YES) {\n                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)\n            } else {\n                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)\n            }\n        }\n\n\n        binding.recyclerUserList.apply {\n            adapter = mAdapter\n        }\n\n        // Adapter Click Listener\n        mAdapter.onItemClick {\n            val data = Bundle()\n            data.putSerializable(AppConstants.USER_NAME, it.login)\n            data.putSerializable(AppConstants.USER_IMAGE, it.avatar_url)\n            findNavController().navigate(R.id.action_quotes_list_frag_to_quotes_details_frag, data)\n        }\n    }\n\n    private fun initObservers() {\n        lifecycleScope.launch {\n            viewModel.userListFlow.collect {\n                when(it) {\n//                    ViewState.Loading -> {\n//                        binding.shimmer.stopShimmer()\n//                        snackBar(\"No Users Found...\")\n//                    }\n                   is ViewState.Loading -> {\n                        binding.shimmer.startShimmer()\n                    }\n                    is ViewState.Success -> {\n                        binding.shimmer.stopShimmer()\n                        binding.shimmer.gone()\n                        it?.let { it1 ->\n                            mAdapter.updateData(it1.output)\n                        }\n                    }\n                    is ViewState.Failure -> {\n                        binding.shimmer.stopShimmer()\n                        binding.shimmer.gone()\n//                        snackBar(it.message.toString())\n                    }\n                }\n            }\n        }\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/llyods/assignment/presentation/fragments/UserListFragment.kt b/app/src/main/java/com/llyods/assignment/presentation/fragments/UserListFragment.kt
+--- a/app/src/main/java/com/llyods/assignment/presentation/fragments/UserListFragment.kt	(revision 6c005e6d06306327ef58b9c2a69724f871ef1ef4)
++++ b/app/src/main/java/com/llyods/assignment/presentation/fragments/UserListFragment.kt	(date 1670583730495)
+@@ -14,15 +14,15 @@
+ import com.llyods.assignment.databinding.FragmentUserListBinding
+ import com.llyods.assignment.extensions.click
+ import com.llyods.assignment.extensions.gone
++import com.llyods.assignment.extensions.snackBar
+ import com.llyods.assignment.utils.AppConstants
+ import com.llyods.assignment.presentation.viewmodel.UserListViewModel
+ import com.llyods.assignment.presentation.viewmodel.ViewState
+ import dagger.hilt.android.AndroidEntryPoint
+-import kotlinx.coroutines.flow.collect
+ import kotlinx.coroutines.launch
+ 
+ @AndroidEntryPoint
+-class UserListFragment : Fragment() {
++class UserListFragment : BaseFragment() {
+ 
+     private lateinit var binding: FragmentUserListBinding
+     private lateinit var mAdapter: UserListAdapter
+@@ -65,7 +65,7 @@
+             val data = Bundle()
+             data.putSerializable(AppConstants.USER_NAME, it.login)
+             data.putSerializable(AppConstants.USER_IMAGE, it.avatar_url)
+-            findNavController().navigate(R.id.action_quotes_list_frag_to_quotes_details_frag, data)
++            findNavController().navigate(R.id.action_user_list_frag_to_user_details_frag, data)
+         }
+     }
+ 
+@@ -73,24 +73,19 @@
+         lifecycleScope.launch {
+             viewModel.userListFlow.collect {
+                 when(it) {
+-//                    ViewState.Loading -> {
+-//                        binding.shimmer.stopShimmer()
+-//                        snackBar("No Users Found...")
+-//                    }
++
+                    is ViewState.Loading -> {
+-                        binding.shimmer.startShimmer()
++                       showHideProgressBar(binding.progressBar, true)
+                     }
+                     is ViewState.Success -> {
+-                        binding.shimmer.stopShimmer()
+-                        binding.shimmer.gone()
++                        showHideProgressBar(binding.progressBar, true)
+                         it?.let { it1 ->
+                             mAdapter.updateData(it1.output)
+                         }
+                     }
+                     is ViewState.Failure -> {
+-                        binding.shimmer.stopShimmer()
+-                        binding.shimmer.gone()
+-//                        snackBar(it.message.toString())
++                        showHideProgressBar(binding.progressBar, false)
++                        snackBar(it.toString())
+                     }
+                 }
+             }
+Index: app/src/main/java/com/llyods/assignment/data/remote/ApiService.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.llyods.assignment.data.remote\n\nimport com.llyods.assignment.data.remote.responses.UserDetailResponse\nimport com.llyods.assignment.data.remote.responses.UserListResponse\nimport retrofit2.http.GET\nimport retrofit2.http.Path\n\ninterface ApiService {\n    @GET(\"repos/square/retrofit/stargazers\")\n    suspend fun getUserList(): UserListResponse\n\n    @GET(\"/users/{user}\")\n    suspend fun getUserDetails(@Path(\"user\") user: String): UserDetailResponse\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/llyods/assignment/data/remote/ApiService.kt b/app/src/main/java/com/llyods/assignment/data/remote/ApiService.kt
+--- a/app/src/main/java/com/llyods/assignment/data/remote/ApiService.kt	(revision 6c005e6d06306327ef58b9c2a69724f871ef1ef4)
++++ b/app/src/main/java/com/llyods/assignment/data/remote/ApiService.kt	(date 1670582788711)
+@@ -6,6 +6,7 @@
+ import retrofit2.http.Path
+ 
+ interface ApiService {
++
+     @GET("repos/square/retrofit/stargazers")
+     suspend fun getUserList(): UserListResponse
+ 
+Index: app/src/test/java/com/llyods/assignment/MockFileReader.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.llyods.assignment\n\nimport okio.buffer\nimport okio.source\nimport java.io.IOException\nimport java.nio.charset.StandardCharsets\n\nclass MockFileReader {\n\n    @Throws(IOException::class)\n    fun getResponseFromJson(fileName: String): String? {\n        val inputStream = javaClass.classLoader?.getResourceAsStream(\n            \"mock_response/$fileName\"\n        )\n        val source = inputStream?.source()?.buffer()\n        return source?.readString(StandardCharsets.UTF_8)\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/test/java/com/llyods/assignment/MockFileReader.kt b/app/src/test/java/com/llyods/assignment/MockFileReader.kt
+--- a/app/src/test/java/com/llyods/assignment/MockFileReader.kt	(revision 6c005e6d06306327ef58b9c2a69724f871ef1ef4)
++++ b/app/src/test/java/com/llyods/assignment/MockFileReader.kt	(date 1670578052438)
+@@ -8,11 +8,11 @@
+ class MockFileReader {
+ 
+     @Throws(IOException::class)
+-    fun getResponseFromJson(fileName: String): String? {
++    fun getResponseFromJson(fileName: String): String {
+         val inputStream = javaClass.classLoader?.getResourceAsStream(
+             "mock_response/$fileName"
+         )
+         val source = inputStream?.source()?.buffer()
+-        return source?.readString(StandardCharsets.UTF_8)
++        return source!!.readString(StandardCharsets.UTF_8)
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/res/layout/list_item_shimmer_effect.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><androidx.constraintlayout.widget.ConstraintLayout\n    android:layout_width=\"match_parent\"\n    android:layout_height=\"130dp\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:layout_marginStart=\"10dp\"\n    android:layout_marginTop=\"10dp\"\n    android:layout_marginRight=\"10dp\"\n    android:background=\"@color/light_grey\"\n    xmlns:android=\"http://schemas.android.com/apk/res/android\">\n\n    <androidx.appcompat.widget.AppCompatTextView\n        android:id=\"@+id/imageUser\"\n        android:layout_width=\"wrap_content\"\n        android:layout_height=\"wrap_content\"\n        android:fontFamily=\"@font/kalam_regular\"\n        android:textSize=\"18sp\"\n        tools:text=\"Lorem ipsum this is test fontsis test fonts is test fonts is test fonts is test fonts is test fonts is test fonts is test fonts is test fonts\"\n        android:textColor=\"@color/black\"\n        app:layout_constraintStart_toStartOf=\"parent\"\n        app:layout_constraintTop_toTopOf=\"parent\"\n        app:layout_constraintEnd_toEndOf=\"parent\"\n        />\n\n    <androidx.appcompat.widget.AppCompatTextView\n        android:id=\"@+id/tvBySign\"\n        android:layout_width=\"wrap_content\"\n        android:layout_height=\"wrap_content\"\n        tools:text=\"\"\n        android:fontFamily=\"@font/kalam_bold\"\n        android:textColor=\"@color/black\"\n        android:textSize=\"16sp\"\n        android:layout_marginTop=\"25dp\"\n        android:layout_marginEnd=\"5dp\"\n        app:layout_constraintTop_toBottomOf=\"@+id/imageUser\"\n        app:layout_constraintEnd_toStartOf=\"@+id/tvQuoteBy\"\n        app:layout_constraintBottom_toBottomOf=\"parent\"\n        />\n\n    <androidx.appcompat.widget.AppCompatTextView\n        android:id=\"@+id/tvQuoteBy\"\n        android:layout_width=\"wrap_content\"\n        android:layout_height=\"wrap_content\"\n        tools:text=\"Aminullah Taj\"\n        android:textColor=\"@color/black\"\n        android:fontFamily=\"@font/kalam_bold\"\n        android:textSize=\"16sp\"\n        android:layout_marginTop=\"25dp\"\n        android:layout_marginEnd=\"10dp\"\n        app:layout_constraintTop_toBottomOf=\"@+id/imageUser\"\n        app:layout_constraintEnd_toEndOf=\"parent\"\n        app:layout_constraintBottom_toBottomOf=\"parent\"\n        />\n\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/list_item_shimmer_effect.xml b/app/src/main/res/layout/list_item_shimmer_effect.xml
+--- a/app/src/main/res/layout/list_item_shimmer_effect.xml	(revision 6c005e6d06306327ef58b9c2a69724f871ef1ef4)
++++ b/app/src/main/res/layout/list_item_shimmer_effect.xml	(date 1670582788703)
+@@ -2,7 +2,6 @@
+     android:layout_width="match_parent"
+     android:layout_height="130dp"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+-    xmlns:tools="http://schemas.android.com/tools"
+     android:layout_marginStart="10dp"
+     android:layout_marginTop="10dp"
+     android:layout_marginRight="10dp"
+@@ -15,7 +14,6 @@
+         android:layout_height="wrap_content"
+         android:fontFamily="@font/kalam_regular"
+         android:textSize="18sp"
+-        tools:text="Lorem ipsum this is test fontsis test fonts is test fonts is test fonts is test fonts is test fonts is test fonts is test fonts is test fonts"
+         android:textColor="@color/black"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+@@ -26,7 +24,6 @@
+         android:id="@+id/tvBySign"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+-        tools:text=""
+         android:fontFamily="@font/kalam_bold"
+         android:textColor="@color/black"
+         android:textSize="16sp"
+@@ -41,7 +38,6 @@
+         android:id="@+id/tvQuoteBy"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+-        tools:text="Aminullah Taj"
+         android:textColor="@color/black"
+         android:fontFamily="@font/kalam_bold"
+         android:textSize="16sp"

@@ -1,19 +1,17 @@
 package com.llyods.assignment.presentation.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.llyods.assignment.R
 import com.llyods.assignment.presentation.adapter.UserListAdapter
 import com.llyods.assignment.databinding.FragmentUserListBinding
-import com.llyods.assignment.extensions.click
 import com.llyods.assignment.extensions.gone
+import com.llyods.assignment.extensions.snackBar
 import com.llyods.assignment.utils.AppConstants
 import com.llyods.assignment.presentation.viewmodel.UserListViewModel
 import com.llyods.assignment.presentation.viewmodel.ViewState
@@ -22,7 +20,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class UserListFragment : Fragment() {
+class UserListFragment : BaseFragment() {
 
     private lateinit var binding: FragmentUserListBinding
     private lateinit var mAdapter: UserListAdapter
@@ -46,15 +44,6 @@ class UserListFragment : Fragment() {
     }
 
     private fun setupUI() {
-        binding.btnDarkMode.click {
-            val mode = AppCompatDelegate.getDefaultNightMode()
-            if(mode == AppCompatDelegate.MODE_NIGHT_YES) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            }
-        }
-
 
         binding.recyclerUserList.apply {
             adapter = mAdapter
@@ -65,7 +54,7 @@ class UserListFragment : Fragment() {
             val data = Bundle()
             data.putSerializable(AppConstants.USER_NAME, it.login)
             data.putSerializable(AppConstants.USER_IMAGE, it.avatar_url)
-            findNavController().navigate(R.id.action_quotes_list_frag_to_quotes_details_frag, data)
+            findNavController().navigate(R.id.action_user_list_frag_to_user_details_frag, data)
         }
     }
 
@@ -73,24 +62,20 @@ class UserListFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.userListFlow.collect {
                 when(it) {
-//                    ViewState.Loading -> {
-//                        binding.shimmer.stopShimmer()
-//                        snackBar("No Users Found...")
-//                    }
                    is ViewState.Loading -> {
                         binding.shimmer.startShimmer()
                     }
                     is ViewState.Success -> {
                         binding.shimmer.stopShimmer()
                         binding.shimmer.gone()
-                        it?.let { it1 ->
+                        it.let { it1 ->
                             mAdapter.updateData(it1.output)
                         }
                     }
                     is ViewState.Failure -> {
                         binding.shimmer.stopShimmer()
                         binding.shimmer.gone()
-//                        snackBar(it.message.toString())
+                        snackBar(resources.getString(R.string.network_failure))
                     }
                 }
             }
