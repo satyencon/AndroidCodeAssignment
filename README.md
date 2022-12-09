@@ -14,6 +14,7 @@ Code Highlights
 By using last.fm API to fetch the top user list and render the UserListFragment, which is attached on MainActivity.
 
 API detail : https://api.github.com/repos/square/retrofit/stargazers
+
              https://api.github.com//users/{user}
 
 When user tap on any list item, currently opening a detail User detail.
