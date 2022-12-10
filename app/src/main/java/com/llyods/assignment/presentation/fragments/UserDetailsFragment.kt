@@ -44,10 +44,12 @@ class UserDetailsFragment : BaseFragment() {
     }
 
     private fun initObserver() {
-        showHideProgressBar(binding.progressBar, true)
         lifecycleScope.launchWhenCreated {
             viewModel.userDetailStateflow.collect {
                 when(it) {
+                    is ViewState.Loading -> {
+                     showHideProgressBar(binding.progressBar, true)
+                    }
                     is ViewState.Success -> {
                         loadImage(binding.image,arguments?.getString(USER_IMAGE))
                         binding.name.text = it.output.name
