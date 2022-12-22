@@ -22,11 +22,9 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class UserListViewModelTest {
 
-    // Set the main coroutines dispatcher for unit testing.
     @get:Rule
     var mainCoroutineRule = TestCoroutineRule()
 
-    // Executes each task synchronously using Architecture Components.
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
@@ -59,7 +57,7 @@ class UserListViewModelTest {
 
 
     @Test
-    fun `WHEN getALlListData called THEN succes should called in sequence`() {
+    fun `WHEN getALlListData called THEN success should called in sequence`() {
         runBlockingTest {
             val topArtistList: ArrayList<UserModel> = mockk()
             coEvery { mockUseCase() } returns fakeSuccessFlow

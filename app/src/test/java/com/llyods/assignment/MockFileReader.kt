@@ -8,11 +8,11 @@ import java.nio.charset.StandardCharsets
 class MockFileReader {
 
     @Throws(IOException::class)
-    fun getResponseFromJson(fileName: String): String {
+    fun getResponseFromJson(fileName: String?): String? {
         val inputStream = javaClass.classLoader?.getResourceAsStream(
             "mock_response/$fileName"
         )
         val source = inputStream?.source()?.buffer()
-        return source!!.readString(StandardCharsets.UTF_8)
+        return source?.readString(StandardCharsets.UTF_8)
     }
 }

@@ -13,25 +13,26 @@ class UserDomainMapper @Inject constructor() {
         return userListResponse.map { userResponse ->
             with(userResponse) {
                 UserModel(
-                    avatar_url = avatar_url,
+                    imageUrl = avatar_url,
                     id = id,
-                    login = login,
+                    name = login,
                     type = type,
                     url = url
-                ) }
+                )
+            }
         }
     }
 
     fun mapperDetail(userDetailModel: UserDetailResponse): UserDetailModel {
-        return  with(userDetailModel) {
+        return with(userDetailModel) {
             UserDetailModel(
-            avatarUrl = avatarUrl,
-            company =  company,
-            email = email,
-           login = login,
-           name = name,
-           url = url,
-           location = location
+                avatarUrl = avatarUrl,
+                company = company,
+                email = email,
+                login = login,
+                name = name,
+                url = url,
+                location = location
 
             )
         }

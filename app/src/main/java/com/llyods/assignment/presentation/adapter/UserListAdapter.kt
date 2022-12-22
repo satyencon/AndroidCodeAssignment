@@ -11,7 +11,7 @@ import com.llyods.assignment.R
 import com.llyods.assignment.databinding.ListUserItemBinding
 import com.llyods.assignment.domain.datamodel.UserModel
 
-class UserListAdapter(var context: Context): RecyclerView.Adapter<UserListAdapter.Holder>() {
+class UserListAdapter(var context: Context) : RecyclerView.Adapter<UserListAdapter.Holder>() {
 
     private val userList = arrayListOf<UserModel>()
 
@@ -27,8 +27,8 @@ class UserListAdapter(var context: Context): RecyclerView.Adapter<UserListAdapte
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val userdata = userList[position]
         with(holder) {
-            Glide.with(binding.imageUser).load(userdata.avatar_url).into(binding.imageUser)
-            binding.tvName.text = userdata.login.capitalize()
+            Glide.with(binding.imageUser).load(userdata.imageUrl).into(binding.imageUser)
+            binding.tvName.text = userdata.name.capitalize()
 
             itemView.setOnClickListener {
                 onItemClick?.invoke(userdata)
@@ -43,7 +43,7 @@ class UserListAdapter(var context: Context): RecyclerView.Adapter<UserListAdapte
 
     override fun getItemCount(): Int = userList.size
 
-    inner class Holder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ListUserItemBinding.bind(itemView)
     }
 }

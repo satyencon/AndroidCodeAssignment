@@ -21,11 +21,10 @@ import org.junit.Rule
 import org.junit.Test
 
 class UserDetailViewModelTest {
-    // Set the main coroutines dispatcher for unit testing.
+
     @get:Rule
     var mainCoroutineRule = TestCoroutineRule()
 
-    // Executes each task synchronously using Architecture Components.
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 

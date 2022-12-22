@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetUserListUseCase @Inject constructor(
-    override val repository: AppRepository
-) : IUseCase<Int, List<UserModel>> {
+    val repository: AppRepository
+) {
 
-    override suspend fun invoke(): Flow<BaseModelResult<List<UserModel>>> {
+    suspend operator fun invoke(): Flow<BaseModelResult<List<UserModel>>> {
         return repository.getUserList()
     }
 

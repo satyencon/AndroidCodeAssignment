@@ -7,5 +7,5 @@ data class UserDetailModel(
     val login: String,
     val name: String?,
     val url: String?,
-    val location:String?
+    val location: String?
 )

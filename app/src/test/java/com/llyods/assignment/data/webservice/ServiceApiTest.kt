@@ -21,10 +21,10 @@ import java.io.IOException
 class ServiceApiTest {
 
     lateinit var mockWebServer: MockWebServer
+
     @get:Rule
     var mainCoroutineRule = TestCoroutineRule()
 
-    // Executes each task synchronously using Architecture Components.
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
@@ -47,11 +47,15 @@ class ServiceApiTest {
     @Throws(IOException::class)
     fun mockResponseFromJson(fileName: String) {
         val mockResponse = MockResponse()
-        mockWebServer.enqueue(
+        MockFileReader().getResponseFromJson(fileName)?.let {
             mockResponse.setBody(
-                MockFileReader().getResponseFromJson(fileName)
+                it
             )
-        )
+        }?.let {
+            mockWebServer.enqueue(
+                it
+            )
+        }
     }
 
     @Test

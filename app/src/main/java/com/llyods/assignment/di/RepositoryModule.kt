@@ -2,8 +2,8 @@ package com.llyods.assignment.di
 
 import com.llyods.assignment.data.mapper.UserDomainMapper
 import com.llyods.assignment.data.remote.ApiService
-import com.llyods.assignment.domain.repository.AppRepository
 import com.llyods.assignment.data.repository.AppRepositoryImpl
+import com.llyods.assignment.domain.repository.AppRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +18,6 @@ class RepositoryModule {
     @Singleton
     @Provides
     fun provideRepository(apiService: ApiService, mapper: UserDomainMapper): AppRepository {
-        return AppRepositoryImpl(apiService,mapper)
+        return AppRepositoryImpl(apiService, mapper)
     }
 }

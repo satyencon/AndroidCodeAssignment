@@ -19,17 +19,17 @@ class NetworkModule {
     @Provides
     fun provideRetrofit(): Retrofit {
         var retrofit: Retrofit? = null
-            retrofit = Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_URL)
-                .client(
-                    OkHttpClient().newBuilder()
-                        .connectTimeout(60, TimeUnit.SECONDS)
-                        .readTimeout(60, TimeUnit.SECONDS)
-                        .writeTimeout(60, TimeUnit.SECONDS)
-                        .build()
-                )
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+        retrofit = Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .client(
+                OkHttpClient().newBuilder()
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .build()
+            )
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
         return retrofit
     }

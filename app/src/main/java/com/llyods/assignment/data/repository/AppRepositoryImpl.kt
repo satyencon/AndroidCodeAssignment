@@ -16,7 +16,7 @@ import javax.inject.Inject
 class AppRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val mapper: UserDomainMapper
-): AppRepository {
+) : AppRepository {
 
     override suspend fun getUserList(): Flow<BaseModelResult<List<UserModel>>> {
         return flow {

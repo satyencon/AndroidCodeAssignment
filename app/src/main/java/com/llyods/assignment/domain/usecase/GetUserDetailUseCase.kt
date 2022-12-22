@@ -6,10 +6,9 @@ import com.llyods.assignment.domain.repository.AppRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetUserDetailUseCase @Inject constructor(override val repository: AppRepository):
-    IUseDetailCase<String, UserDetailModel>{
+class GetUserDetailUseCase @Inject constructor(val repository: AppRepository) {
 
-    override suspend fun invoke(input: String): Flow<BaseModelResult<UserDetailModel>> {
+    suspend operator fun invoke(input: String): Flow<BaseModelResult<UserDetailModel>> {
         return repository.getUserDetail(input)
     }
 }

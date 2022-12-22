@@ -8,9 +8,6 @@ import kotlinx.coroutines.test.setMain
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
-/**
- * Coroutine dispatcher in order to avoid the Main dispatcher that is Android Specific
- */
 @ExperimentalCoroutinesApi
 class TestCoroutineRule(private val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()) :
     TestWatcher() {

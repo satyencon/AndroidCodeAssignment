@@ -7,16 +7,22 @@ import com.llyods.assignment.domain.datamodel.UserModel
 import com.llyods.assignment.domain.usecase.GetUserListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class UserListViewModel @Inject constructor(
     private val getUserListUseCase: GetUserListUseCase
-): ViewModel() {
+) : ViewModel() {
 
-    private val _userListFlow = MutableStateFlow<ViewState<List<UserModel>>>(ViewState.Loading(true))
+    private val _userListFlow =
+        MutableStateFlow<ViewState<List<UserModel>>>(ViewState.Loading(true))
     val userListFlow get() = _userListFlow
 
     fun getALlListData() {
@@ -51,7 +57,6 @@ class UserListViewModel @Inject constructor(
             }
             emit(ViewState.Loading(false))
         }.flowOn(Dispatchers.IO)
-
 
 
 }
