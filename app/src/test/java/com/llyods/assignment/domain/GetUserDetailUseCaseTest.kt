@@ -2,14 +2,10 @@ package com.llyods.assignment.domain
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.llyods.assignment.TestCoroutineRule
-import com.llyods.assignment.data.mapper.UserDomainMapper
-import com.llyods.assignment.data.remote.ApiService
 import com.llyods.assignment.data.repository.AppRepositoryImpl
 import com.llyods.assignment.domain.datamodel.BaseModelResult
 import com.llyods.assignment.domain.datamodel.UserDetailModel
-import com.llyods.assignment.domain.datamodel.UserModel
 import com.llyods.assignment.domain.usecase.GetUserDetailUseCase
-import com.llyods.assignment.domain.usecase.GetUserListUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
