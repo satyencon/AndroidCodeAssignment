@@ -1,6 +1,7 @@
 package com.llyods.assignment.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.llyods.assignment.domain.datamodel.BaseModelResult
 import com.llyods.assignment.domain.datamodel.UserModel

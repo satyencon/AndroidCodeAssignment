@@ -21,12 +21,15 @@ import com.llyods.assignment.utils.AppConstants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class UserListFragment : Fragment() {
 
     private lateinit var binding: FragmentUserListBinding
-    private lateinit var mAdapter: UserListAdapter
+
+    @Inject
+     lateinit var mAdapter: UserListAdapter
 
     private val viewModel: UserListViewModel by viewModels()
 
@@ -34,7 +37,6 @@ class UserListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mAdapter = UserListAdapter(requireContext())
         binding = FragmentUserListBinding.inflate(inflater, container, false)
         return binding.root
     }

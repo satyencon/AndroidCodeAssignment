@@ -1,7 +1,5 @@
 package com.llyods.assignment.presentation.adapter
 
-
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +8,11 @@ import com.bumptech.glide.Glide
 import com.llyods.assignment.R
 import com.llyods.assignment.databinding.ListUserItemBinding
 import com.llyods.assignment.domain.datamodel.UserModel
+import dagger.hilt.android.scopes.FragmentScoped
+import javax.inject.Inject
 
-class UserListAdapter(var context: Context) : RecyclerView.Adapter<UserListAdapter.Holder>() {
+@FragmentScoped
+class UserListAdapter  @Inject constructor(): RecyclerView.Adapter<UserListAdapter.Holder>() {
 
     private val userList = arrayListOf<UserModel>()
 
@@ -22,7 +23,7 @@ class UserListAdapter(var context: Context) : RecyclerView.Adapter<UserListAdapt
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
-        Holder(LayoutInflater.from(context).inflate(R.layout.list_user_item, parent, false))
+        Holder(LayoutInflater.from(parent.context).inflate(R.layout.list_user_item, parent, false))
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val userdata = userList[position]
