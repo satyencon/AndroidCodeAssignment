@@ -15,7 +15,7 @@ import com.llyods.assignment.extensions.loadImage
 import com.llyods.assignment.extensions.showHideProgressBar
 import com.llyods.assignment.extensions.snackBar
 import com.llyods.assignment.presentation.viewmodel.UserDetailViewModel
-import com.llyods.assignment.presentation.viewmodel.ViewState
+import com.llyods.assignment.presentation.viewmodel.ApiState
 import com.llyods.assignment.utils.AppConstants.IMAGE_URL
 import com.llyods.assignment.utils.AppConstants.USER_NAME
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,17 +52,17 @@ class UserDetailsFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.userDetailStateflow.collect {
                     when (it) {
-                        is ViewState.Loading -> {
+                        is ApiState.Loading -> {
                             binding.progressBar.showHideProgressBar(true)
                         }
-                        is ViewState.Success -> {
+                        is ApiState.Success -> {
                             binding.image.loadImage(arguments?.getString(IMAGE_URL))
                             binding.name.text = it.output.name
                             binding.location.text = it.output.location
                             binding.progressBar.showHideProgressBar(false)
 
                         }
-                        is ViewState.Failure -> {
+                        is ApiState.Failure -> {
                             binding.progressBar.showHideProgressBar(false)
                             snackBar(resources.getString(R.string.network_failure))
                         }

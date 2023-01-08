@@ -8,8 +8,10 @@ import com.llyods.assignment.domain.datamodel.UserDetailModel
 import com.llyods.assignment.domain.datamodel.UserModel
 import com.llyods.assignment.domain.repository.AppRepository
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 @DelicateCoroutinesApi
@@ -39,7 +41,7 @@ class AppRepositoryImpl @Inject constructor(
             } catch (e: Exception) {
                 emit(BaseModelResult.OnFailure(e))
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
 

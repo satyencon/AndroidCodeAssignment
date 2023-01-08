@@ -14,7 +14,7 @@ import javax.inject.Inject
 @FragmentScoped
 class UserListAdapter  @Inject constructor(): RecyclerView.Adapter<UserListAdapter.Holder>() {
 
-    private val userList = arrayListOf<UserModel>()
+     private val userList = arrayListOf<UserModel>()
 
     fun updateData(list: List<UserModel>) {
         userList.clear()
@@ -46,5 +46,6 @@ class UserListAdapter  @Inject constructor(): RecyclerView.Adapter<UserListAdapt
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ListUserItemBinding.bind(itemView)
+        var saa = userList
     }
 }

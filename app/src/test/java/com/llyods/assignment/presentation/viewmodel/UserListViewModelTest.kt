@@ -6,7 +6,7 @@ import com.llyods.assignment.TestCoroutineRule
 import com.llyods.assignment.domain.datamodel.BaseModelResult
 import com.llyods.assignment.domain.datamodel.UserModel
 import com.llyods.assignment.domain.usecase.GetUserListUseCase
-import com.llyods.assignment.presentation.viewmodel.ViewState.*
+import com.llyods.assignment.presentation.viewmodel.ApiState.*
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.coEvery
@@ -31,7 +31,7 @@ class UserListViewModelTest {
 
     private val mockUserList: List<UserModel> = mockk()
 
-    private val viewStateObserver: Observer<ViewState<List<UserModel>>> = mockk()
+    private val viewStateObserver: Observer<ApiState<List<UserModel>>> = mockk()
 
     private val mockException: Exception = mockk()
 

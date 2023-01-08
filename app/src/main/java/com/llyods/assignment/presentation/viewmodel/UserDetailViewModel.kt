@@ -21,40 +21,29 @@ class UserDetailViewModel @Inject constructor(
     private val getUserDetailUseCase: GetUserDetailUseCase
 ) : ViewModel() {
 
-    private val _userDetail = MutableStateFlow<ViewState<UserDetailModel>>(ViewState.Loading(true))
+    private val _userDetail = MutableStateFlow<ApiState<UserDetailModel>>(ApiState.Loading(true))
     val userDetailStateflow get() = _userDetail
 
     fun getUserDetail(user: String) {
         viewModelScope.launch {
-            getViewStateFlowForNetworkCall {
-                getUserDetailUseCase(user)
+           getUserDetailUseCase(user)
+           .map {
+            when (it) {
+                   is BaseModelResult.OnSuccess -> ApiState.Success(it.data)
+                   is BaseModelResult.OnFailure -> ApiState.Failure(it.throwable)
+               }
             }.collect {
                 when (it) {
-                    is ViewState.Loading -> _userDetail.value = ViewState.Loading(false)
-                    is ViewState.Failure -> _userDetail.value = it
-                    is ViewState.Success -> {
+                    is ApiState.Loading -> _userDetail.value = ApiState.Loading(false)
+                    is ApiState.Failure -> _userDetail.value = it
+                    is ApiState.Success -> {
                         it.output.let { artists ->
-                            _userDetail.value = ViewState.Success(artists)
+                            _userDetail.value = ApiState.Success(artists)
                         }
                     }
                 }
             }
         }
     }
-
-
-    suspend fun <T : Any> getViewStateFlowForNetworkCall(ioOperation: suspend () -> Flow<BaseModelResult<T>>) =
-        flow {
-            emit(ViewState.Loading(true))
-            ioOperation().map {
-                when (it) {
-                    is BaseModelResult.OnSuccess -> ViewState.Success(it.data)
-                    is BaseModelResult.OnFailure -> ViewState.Failure(it.throwable)
-                }
-            }.collect {
-                emit(it)
-            }
-            emit(ViewState.Loading(false))
-        }.flowOn(Dispatchers.IO)
 
 }

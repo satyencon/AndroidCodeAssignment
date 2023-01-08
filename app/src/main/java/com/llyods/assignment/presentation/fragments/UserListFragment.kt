@@ -16,7 +16,7 @@ import com.llyods.assignment.extensions.gone
 import com.llyods.assignment.extensions.snackBar
 import com.llyods.assignment.presentation.adapter.UserListAdapter
 import com.llyods.assignment.presentation.viewmodel.UserListViewModel
-import com.llyods.assignment.presentation.viewmodel.ViewState
+import com.llyods.assignment.presentation.viewmodel.ApiState
 import com.llyods.assignment.utils.AppConstants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -68,10 +68,10 @@ class UserListFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.userListFlow.collect {
                     when (it) {
-                        is ViewState.Loading -> {
+                        is ApiState.Loading -> {
                             binding.shimmer.startShimmer()
                         }
-                        is ViewState.Success -> {
+                        is ApiState.Success -> {
                             with(binding.shimmer) {
                                 stopShimmer()
                                 gone()
@@ -80,7 +80,7 @@ class UserListFragment : Fragment() {
                                 mAdapter.updateData(it1.output)
                             }
                         }
-                        is ViewState.Failure -> {
+                        is ApiState.Failure -> {
                             with(binding.shimmer) {
                                 stopShimmer()
                                 gone()
