@@ -16,7 +16,7 @@ import com.llyods.assignment.extensions.gone
 import com.llyods.assignment.extensions.snackBar
 import com.llyods.assignment.presentation.adapter.UserListAdapter
 import com.llyods.assignment.presentation.viewmodel.UserListViewModel
-import com.llyods.assignment.presentation.viewmodel.ApiState
+import com.llyods.assignment.presentation.viewmodel.viewstate.ApiState
 import com.llyods.assignment.utils.AppConstants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect

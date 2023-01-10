@@ -6,9 +6,10 @@ import com.llyods.assignment.TestCoroutineRule
 import com.llyods.assignment.domain.datamodel.BaseModelResult
 import com.llyods.assignment.domain.datamodel.UserDetailModel
 import com.llyods.assignment.domain.usecase.GetUserDetailUseCase
-import com.llyods.assignment.presentation.viewmodel.ApiState.Loading
-import com.llyods.assignment.presentation.viewmodel.ApiState.Failure
-import com.llyods.assignment.presentation.viewmodel.ApiState.Success
+import com.llyods.assignment.presentation.viewmodel.viewstate.ApiState
+import com.llyods.assignment.presentation.viewmodel.viewstate.ApiState.Loading
+import com.llyods.assignment.presentation.viewmodel.viewstate.ApiState.Failure
+import com.llyods.assignment.presentation.viewmodel.viewstate.ApiState.Success
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every

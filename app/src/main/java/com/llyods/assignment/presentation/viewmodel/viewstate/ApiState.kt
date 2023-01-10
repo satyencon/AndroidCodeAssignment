@@ -1,4 +1,4 @@
-package com.llyods.assignment.presentation.viewmodel
+package com.llyods.assignment.presentation.viewmodel.viewstate
 
 
 sealed class ApiState<out T : Any> {

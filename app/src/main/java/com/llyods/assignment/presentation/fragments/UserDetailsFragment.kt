@@ -15,7 +15,7 @@ import com.llyods.assignment.extensions.loadImage
 import com.llyods.assignment.extensions.showHideProgressBar
 import com.llyods.assignment.extensions.snackBar
 import com.llyods.assignment.presentation.viewmodel.UserDetailViewModel
-import com.llyods.assignment.presentation.viewmodel.ApiState
+import com.llyods.assignment.presentation.viewmodel.viewstate.ApiState
 import com.llyods.assignment.utils.AppConstants.IMAGE_URL
 import com.llyods.assignment.utils.AppConstants.USER_NAME
 import dagger.hilt.android.AndroidEntryPoint

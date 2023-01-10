@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.llyods.assignment.domain.datamodel.BaseModelResult
 import com.llyods.assignment.domain.datamodel.UserModel
 import com.llyods.assignment.domain.usecase.GetUserListUseCase
+import com.llyods.assignment.presentation.viewmodel.viewstate.ApiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
