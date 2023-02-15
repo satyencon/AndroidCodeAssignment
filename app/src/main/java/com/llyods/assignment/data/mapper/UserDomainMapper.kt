@@ -1,4 +1,4 @@
-package com.llyods.assignment.domain.mapper
+package com.llyods.assignment.data.mapper
 
 import com.llyods.assignment.data.remote.responses.UserDetailResponse
 import com.llyods.assignment.data.remote.responses.UserListResponse

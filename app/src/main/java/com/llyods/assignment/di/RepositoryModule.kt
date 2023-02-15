@@ -1,6 +1,6 @@
 package com.llyods.assignment.di
 
-import com.llyods.assignment.domain.mapper.UserDomainMapper
+import com.llyods.assignment.data.mapper.UserDomainMapper
 import com.llyods.assignment.data.remote.ApiService
 import com.llyods.assignment.data.repository.AppRepositoryImpl
 import com.llyods.assignment.domain.repository.AppRepository

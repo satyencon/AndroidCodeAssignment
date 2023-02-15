@@ -14,8 +14,11 @@ import io.mockk.coEvery
 import io.mockk.MockKAnnotations
 import io.mockk.verifyOrder
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -32,7 +35,7 @@ class UserListViewModelTest {
 
     private val mockUserList: List<UserModel> = mockk()
 
-    private val viewStateObserver: Observer<ApiState<List<UserModel>>> = mockk()
+    private val viewStateObserver: FlowCollector<ApiState<List<UserModel>>> = mockk()
 
     private val mockException: Exception = mockk()
 
@@ -52,23 +55,25 @@ class UserListViewModelTest {
     @Before
     fun setUp(){
         MockKAnnotations.init(this)
-        every { mockException.message } returns "Exception!!"
         viewModel = UserListViewModel(mockUseCase)
     }
 
 
     @Test
     fun `WHEN getALlListData called THEN success should called in sequence`() {
-        runBlockingTest {
+        runTest {
             val topArtistList: ArrayList<UserModel> = mockk()
             coEvery { mockUseCase() } returns fakeSuccessFlow
+            launch {  viewModel.userListFlow.collect(viewStateObserver) }
             viewModel.getALlListData()
 
             verifyOrder {
                 with(viewStateObserver) {
-                  onChanged(Loading(true))
-                  onChanged(Success(topArtistList))
-                  onChanged(Loading(false))
+                    runTest {
+                        emit(Loading(true))
+                        emit(Success(topArtistList))
+                        emit(Loading(false))
+                    }
                 }
             }
         }
@@ -78,14 +83,19 @@ class UserListViewModelTest {
     @Test
     fun `WHEN network failure called THEN failure should called`(){
 
-        runBlockingTest {
+        runTest {
             coEvery { mockUseCase() } returns fakeFailureFlow
+            launch {  viewModel.userListFlow.collect(viewStateObserver) }
             viewModel.getALlListData()
 
             verifyOrder {
-                viewStateObserver.onChanged(Loading(true))
-                viewStateObserver.onChanged(Failure(mockException))
-                viewStateObserver.onChanged(Loading(false))
+                with(viewStateObserver) {
+                    runTest {
+                        emit(Loading(true))
+                        emit(Failure(mockException))
+                        emit(Loading(false))
+                    }
+                }
             }
         }
     }

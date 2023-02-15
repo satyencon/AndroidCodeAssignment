@@ -5,7 +5,6 @@ import com.llyods.assignment.MockFileReader
 import com.llyods.assignment.TestCoroutineRule
 import com.llyods.assignment.data.remote.ApiService
 import com.llyods.assignment.data.remote.responses.UserListResponseItem
-import com.llyods.assignment.domain.datamodel.BaseModelResult
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types

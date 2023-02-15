@@ -15,8 +15,11 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verifyOrder
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -32,7 +35,7 @@ class UserDetailViewModelTest {
 
     private val mockUserDetail: UserDetailModel = mockk()
 
-    private val viewStateObserver: Observer<ApiState<UserDetailModel>> = mockk()
+    private val viewStateObserver: FlowCollector<ApiState<UserDetailModel>> = mockk()
 
     private val mockException: Exception = mockk()
 
@@ -52,23 +55,25 @@ class UserDetailViewModelTest {
     @Before
     fun setUp(){
         MockKAnnotations.init(this)
-        every { mockException.message } returns "Exception!!"
         viewModel = UserDetailViewModel(mockUseCase)
     }
 
 
     @Test
     fun `WHEN getUserDetail called THEN succes should called in sequence`() {
-        runBlockingTest {
+        runTest {
             val user: UserDetailModel = mockk()
             coEvery { mockUseCase("mcroydon") } returns fakeSuccessFlow
+            launch {  viewModel.userDetailStateflow.collect(viewStateObserver) }
             viewModel.getUserDetail("mcroydon")
 
             verifyOrder {
                 with(viewStateObserver) {
-                    onChanged(Loading(true))
-                    onChanged(Success(user))
-                    onChanged(Loading(false))
+                    runTest {
+                        emit(Loading(true))
+                        emit(Success(user))
+                        emit(Loading(false))
+                    }
                 }
             }
         }
@@ -78,14 +83,20 @@ class UserDetailViewModelTest {
     @Test
     fun `WHEN network failure called THEN failure should called`(){
 
-        runBlockingTest {
+        runTest {
             coEvery { mockUseCase("mcroydon") } returns fakeFailureFlow
+            launch {  viewModel.userDetailStateflow.collect(viewStateObserver) }
             viewModel.getUserDetail("mcroydon")
 
             verifyOrder {
-                viewStateObserver.onChanged(Loading(true))
-                viewStateObserver.onChanged(Failure(mockException))
-                viewStateObserver.onChanged(Loading(false))
+                with(viewStateObserver){
+                    runTest {
+                        emit(Loading(true))
+                        emit(Failure(mockException))
+                        emit(Loading(false))
+                    }
+                }
+
             }
         }
     }
